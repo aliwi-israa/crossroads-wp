@@ -206,7 +206,6 @@ function crossroads_enqueue_fontawesome() {
   );
 }
 add_action('wp_enqueue_scripts', 'crossroads_enqueue_fontawesome');
-
 /**
  * Config
  */
@@ -222,7 +221,6 @@ if (function_exists('acf_add_options_page')) {
 /**
  * header menu
  */
-
 function crossroads_register_menus() {
   register_nav_menus([
     'main_menu'   => 'Main Menu',
@@ -230,3 +228,14 @@ function crossroads_register_menus() {
   ]);
 }
 add_action('after_setup_theme', 'crossroads_register_menus');
+
+/**
+ * add a class to all subpages
+ */
+function add_custom_body_class($classes) {
+  if (!is_front_page() && !is_home()) {
+    $classes[] = 'subpage';
+  }
+  return $classes;
+}
+add_filter('body_class', 'add_custom_body_class');
