@@ -27,10 +27,29 @@ $subheading = get_sub_field('subheading');
     <div class="breadcrumbs-wrap">
       <div class="container">
         <div class="breadcrumbs">
-          <ul class="crumb wow fadeInDown">
-            <li><a href="<?php echo esc_url(home_url()); ?>">Home</a></li>
-            <li class="active"><?php echo esc_html(get_the_title()); ?></li>
-          </ul>
+   <ul class="crumb wow fadeInDown">
+  <li><a href="<?php echo esc_url(home_url()); ?>">Home</a></li>
+
+  <?php if (is_singular('service')) :
+    // Get the first assigned service-category term
+    $terms = get_the_terms(get_the_ID(), 'service-category');
+    if ($terms && !is_wp_error($terms)) :
+      $term_link = get_term_link($terms[0]);
+  ?>
+    <li><a href="<?php echo esc_url($term_link); ?>"><?php echo esc_html($terms[0]->name); ?></a></li>
+  <?php endif; endif; ?>
+
+  <?php if (is_tax('service-category')) : 
+    $term = get_queried_object();
+  ?>
+    <li><a href="#">Our Services</a></li>
+    <li class="active"><?php echo esc_html($term->name); ?></li>
+
+  <?php else : ?>
+    <li class="active"><?php echo esc_html(get_the_title()); ?></li>
+  <?php endif; ?>
+</ul>
+
         </div>
       </div>
     </div>

@@ -2799,6 +2799,9 @@ footer li.menu-item, footer .col-lg-4 {
 footer .col-lg-4  {
   text-align: left !important;
 }
+.active-parent {
+  color: var(--primary-color) !important;
+}
 @-webkit-keyframes move-up-down {
   0% {
     transform: translateY(0);
