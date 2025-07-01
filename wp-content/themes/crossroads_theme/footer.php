@@ -108,42 +108,6 @@
 
 
 <?php wp_footer(); ?>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const path = window.location.pathname.replace(/\/+$/, '').toLowerCase();
-  console.log('Current pathname:', path);
-
-  // Auto-expand the menu that matches the current page
-  document.querySelectorAll('.services-nav .collapse').forEach(collapseDiv => {
-    const links = collapseDiv.querySelectorAll('.nav-link');
-
-    links.forEach(link => {
-      const href = link.getAttribute('href');
-      if (!href) return;
-
-      // Normalize href to just its pathname
-      const testPath = new URL(href, window.location.origin).pathname.replace(/\/+$/, '').toLowerCase();
-      console.log('Testing against:', testPath);
-
-      if (path === testPath) {
-        console.log('✅ MATCH:', testPath);
-
-        collapseDiv.classList.add('show');
-
-        const toggle = document.querySelector(`[data-target="#${collapseDiv.id}"], [href="#${collapseDiv.id}"]`);
-        if (toggle) {
-          toggle.setAttribute('aria-expanded', 'true');
-          toggle.classList.add('active');
-          const icon = toggle.querySelector('.rotate-icon');
-          if (icon) icon.classList.add('rotated');
-        }
-
-        link.classList.add('active');
-      }
-    });
-  });
-});
-</script>
 
 </body>
 </html>

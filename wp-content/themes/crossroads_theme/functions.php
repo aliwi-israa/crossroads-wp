@@ -174,9 +174,9 @@ if ( defined( 'JETPACK__VERSION' ) ) {
  */
 function crossroads_enqueue_styles() {
 	wp_enqueue_style('plugins-css', get_template_directory_uri() . '/assets/css/plugins.css');
+      wp_enqueue_style('critical-css', get_template_directory_uri() . '/assets/css/critical.css');
     wp_enqueue_style('bootstrap-css', get_template_directory_uri() . '/assets/css/bootstrap.min.css');
 	wp_enqueue_style('swiper-css', get_template_directory_uri() . '/assets/css/swiper.css');
-    wp_enqueue_style('critical-css', get_template_directory_uri() . '/assets/css/critical.css');
     wp_enqueue_style('custom-css', get_template_directory_uri() . '/assets/css/style.css');
 	wp_enqueue_style('custom-mobile.css', get_template_directory_uri() . '/assets/css/style-mobile.css');
 
@@ -247,7 +247,7 @@ function register_service_category_taxonomy() {
 register_taxonomy('service-category', 'service', [
   'label' => 'Service Categories',
   'hierarchical' => true,
-  'rewrite' => ['slug' => 'services'], // this is key
+'rewrite' => ['slug' => 'service-category'],
   'public' => true,
   'show_in_rest' => true,
 ]);
@@ -345,3 +345,24 @@ function register_team_member_post_type() {
     register_post_type('team_member', $args);
 }
 add_action('init', 'register_team_member_post_type');
+function register_faq_post_type() {
+    register_post_type('faq', [
+        'labels' => [
+            'name'          => 'FAQs',
+            'singular_name' => 'FAQ',
+            'add_new'       => 'Add New FAQ',
+            'add_new_item'  => 'Add New FAQ',
+            'edit_item'     => 'Edit FAQ',
+            'new_item'      => 'New FAQ',
+            'view_item'     => 'View FAQ',
+            'search_items'  => 'Search FAQs',
+        ],
+        'public'          => true,
+        'show_in_rest'    => true,
+        'supports'        => ['title', 'editor'],
+        'rewrite'         => ['slug' => 'faq'],
+        'has_archive'     => true,
+        'menu_icon'       => 'dashicons-editor-help',
+    ]);
+}
+add_action('init', 'register_faq_post_type');

@@ -38,3 +38,69 @@ document.querySelectorAll('.services-nav .collapse .nav-link').forEach(link=>{
     }
 });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname.replace(/\/+$/, '').toLowerCase();
+  
+  // Loop through all menu groups
+  document.querySelectorAll('.services-nav .nav-item').forEach(item => {
+    const parentLink = item.querySelector('.parent-category');
+    const submenu = item.querySelector('.collapse');
+    const childLinks = submenu ? submenu.querySelectorAll('.nav-link') : [];
+
+    // Get parent toggle href (should be an anchor like #submenu1)
+    const toggleTarget = parentLink ? parentLink.getAttribute('href') : null;
+
+    let isChildActive = false;
+
+    // Check child links for a match
+    childLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+
+      const testPath = new URL(href, window.location.origin).pathname.replace(/\/+$/, '').toLowerCase();
+
+      if (testPath === path) {
+        link.classList.add('active');
+        isChildActive = true;
+      }
+    });
+
+    if (isChildActive) {
+      // Child page matched: expand parent and mark parent active
+      if (submenu) submenu.classList.add('show');
+      if (parentLink) {
+        parentLink.classList.add('active-parent');
+        parentLink.setAttribute('aria-expanded', 'true');
+
+        const icon = parentLink.querySelector('.rotate-icon');
+        if (icon) icon.classList.add('rotated');
+      }
+    } else if (toggleTarget && toggleTarget.startsWith('#')) {
+      // If current page is the parent category itself, highlight parent only
+      const targetID = toggleTarget.slice(1);
+      const termLink = document.querySelector(`.services-nav .nav-link[href="#${targetID}"]`);
+
+      if (termLink) {
+        const termURL = new URL(window.location.origin + '/' + targetID.replace('submenu', '') + '/').pathname.replace(/\/+$/, '').toLowerCase();
+        
+        if (path.includes(termURL) && !isChildActive) {
+          parentLink.classList.add('active-parent');
+          parentLink.setAttribute('aria-expanded', 'false'); // Keep submenu collapsed
+        }
+      }
+    }
+  });
+
+  // Standalone services (bottom links)
+  document.querySelectorAll('.services-nav > .nav-item > .nav-link:not(.parent-category)').forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    const testPath = new URL(href, window.location.origin).pathname.replace(/\/+$/, '').toLowerCase();
+
+    if (testPath === path) {
+      link.classList.add('active');
+    }
+  });
+});

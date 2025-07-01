@@ -35,13 +35,17 @@
                         }
 
                         endwhile;
-                    endif;
-                    ?>
-                    </div>
+                    endif;?>
                 </div>
+              </div>
             </div>
         </section>
-        <?php get_template_part('partials/banner-section'); ?>
+        <?php
+        if (wp_is_mobile()) {
+            get_template_part('partials/contact-form-mobile');
+        }
+        get_template_part('partials/banner-section'); 
+      ?>
     </div>
 </div>
 
