@@ -6,8 +6,8 @@ get_header();
 $subtitle = get_field('subtitle') ?: 'Thank you!';
 $title    = get_field('headline') ?: get_the_title();
 $message  = get_field('message') ?: 'We’ve received your request and will get back to you shortly.';
-$image    = get_field('image'); // No default
-$image_url = $image ? esc_url($image['url']) : ''; // Optional
+$image    = get_field('image');
+$image_url = $image ? esc_url($image['url']) : '';
 ?>
 
 <section>

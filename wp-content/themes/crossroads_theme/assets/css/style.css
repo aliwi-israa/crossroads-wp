@@ -2823,6 +2823,15 @@ footer .col-lg-4  {
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
 
+.front-page .container {
+  margin-left: 75px;
+  margin-right: 75px;
+}
+
+a:visited {
+  color: unset;
+}
+
 @-webkit-keyframes move-up-down {
   0% {
     transform: translateY(0);

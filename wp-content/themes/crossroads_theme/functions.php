@@ -312,7 +312,9 @@ function register_services_post_type() {
     register_post_type('service', $args);
 }
 add_action('init', 'register_services_post_type');
-
+/**
+ * register team member post type
+ */
 function register_team_member_post_type() {
     $labels = array(
         'name'               => 'Team Members',
@@ -345,6 +347,9 @@ function register_team_member_post_type() {
     register_post_type('team_member', $args);
 }
 add_action('init', 'register_team_member_post_type');
+/**
+ * register FAQ post type
+ */
 function register_faq_post_type() {
     register_post_type('faq', [
         'labels' => [
@@ -366,3 +371,75 @@ function register_faq_post_type() {
     ]);
 }
 add_action('init', 'register_faq_post_type');
+/**
+ * dynamically add services to navbar
+ */
+class Services_Menu_Walker extends Walker_Nav_Menu {
+  public function start_lvl( &$output, $depth = 0, $args = null ) {
+    $output .= '<ul>';
+  }
+
+  public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
+    $title   = esc_html($item->title);
+    $url     = esc_url($item->url);
+    $classes = implode(' ', $item->classes ?? []);
+
+    // Replace static Services item with dynamic dropdown
+    if (stripos($title, 'Services') !== false && $depth === 0) {
+      echo '<!-- Debug: Found Services menu -->';
+
+      $output .= '<li class="menu-item-has-children has-child">';
+      $output .= '<a class="menu-item" href="' . home_url('/services/') . '">Services</a>';
+      $output .= '<span><i class="fas fa-chevron-down d-flex d-lg-none"></i></span>';
+      $output .= '<ul>';
+
+      $categories = get_terms([
+        'taxonomy'   => 'service-category',
+        'hide_empty' => false,
+        'orderby'    => 'name',
+      ]);
+      if (!empty($categories)) {
+  foreach ($categories as $cat) {
+    // render category and services
+  }
+  } else {
+    $output .= '<li><a href="#">No services found</a></li>';
+  }
+
+
+        foreach ($categories as $cat) {
+          $services = get_posts([
+            'post_type' => 'service',
+            'posts_per_page' => -1,
+            'orderby' => 'menu_order',
+            'order' => 'ASC',
+            'tax_query' => [[
+              'taxonomy' => 'service-category',
+              'field' => 'term_id',
+              'terms' => $cat->term_id,
+            ]],
+          ]);
+
+          if ($services) {
+            $cat_slug = sanitize_title($cat->name);
+            $output .= '<li class="has-child">';
+            $output .= '<a href="' . home_url('/service-category/' . $cat_slug . '/') . '">' . esc_html($cat->name) . '</a>';
+            $output .= '<span><i class="fas fa-chevron-down d-flex d-lg-none"></i></span>';
+            $output .= '<ul>';
+            foreach ($services as $service) {
+              $output .= '<li><a href="' . get_permalink($service->ID) . '">' . esc_html($service->post_title) . '</a></li>';
+            }
+            $output .= '</ul></li>';
+          }
+        }
+
+        $output .= '</ul></li>';
+      } else {
+        // Render regular menu items (including dropdowns)
+        $output .= '<li class="' . esc_attr($classes) . '">';
+        $output .= '<a class="menu-item" href="' . $url . '">' . $title . '</a>';
+      }
+    }
+}
+
+
