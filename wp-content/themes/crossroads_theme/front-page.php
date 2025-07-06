@@ -84,15 +84,12 @@
         <?php if (get_row_layout() === 'services_block'): ?>
           <?php get_template_part('template-parts/flexible/homepage/services-block'); ?>
         <?php endif; ?>
-
-        <?php if (get_row_layout() === 'content_block_no2'): ?>
-          <?php get_template_part('template-parts/flexible/homepage/content-block-2'); ?>
-        <?php endif; ?>
-
         <?php if (get_row_layout() === 'team_block'): ?>
           <?php get_template_part('template-parts/flexible/homepage/team-block'); ?>
         <?php endif; ?>
-        
+        <?php if (get_row_layout() === 'faqs'): ?>
+          <?php get_template_part('template-parts/flexible/homepage/faqs'); ?>
+        <?php endif; ?>  
         <?php if (get_row_layout() === 'cta_banner'): ?>
           <?php get_template_part('template-parts/flexible/homepage/cta-banner'); ?>
         <?php endif; ?>

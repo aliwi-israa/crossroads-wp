@@ -1,10 +1,12 @@
 <?php
-$image = get_sub_field('image');
+$sub = get_sub_field('subheading');
 $heading = get_sub_field('heading');
-$sub = get_sub_field('sub_heading');
 $description = get_sub_field('description');
-$button_text = get_sub_field('button_text');
-$button_link = get_sub_field('button_link');
+$page_link = get_sub_field('page_link');
+$show_rating = get_sub_field('show_google_rating');
+$rating = get_sub_field('google_ratings') ?: '5.0';
+$show_features = get_sub_field('show_features');
+$image = get_sub_field('image');
 $image_direction = get_sub_field('image_direction');
 ?>
 <section>
@@ -21,21 +23,44 @@ $image_direction = get_sub_field('image_direction');
             </div>
             <div class="col-lg-6">
                 <div class="me-lg-3">
-                    <?php if ($sub) : ?><div class="subtitle s2 mb-3"><?php echo esc_html($sub); ?></div>
+                    <?php if ($sub) : ?><div class="subtitle s2 mb-3 wow fadeInUp"><?php echo esc_html($sub); ?></div>
                     <?php endif; ?>
-                    <?php if ($heading) : ?><h2><?php echo esc_html($heading); ?></h2><?php endif; ?>
-                    <?php if ($description) : ?><p><?php echo strip_tags($description, '<ul><li>');?></p>
+                    <?php if ($heading) : ?><h2 class="wow fadeInUp" data-wow-delay=".2s"><?php echo esc_html($heading); ?></h2><?php endif; ?>
+                    <?php if ($description) : ?><p class="wow fadeInUp" data-wow-delay=".4s"><?php echo strip_tags($description, '<ul><li>');?></p>
                     <?php endif; ?>
-                    <?php if (have_rows('features')) : ?>
-                    <ul class="ul-check text-dark cols-2 fw-600 mb-4">
-                        <?php while (have_rows('features')) : the_row(); ?>
-                        <li><?php echo esc_html(get_sub_field('feature_text')); ?></li>
-                        <?php endwhile; ?>
-                    </ul>
+                    <?php if ($show_features || $show_rating) : ?>
+                        <div class="border-bottom mb-4"></div>
+                        <div class="row g-4">
+                            <?php if (have_rows('features')) : ?>
+                            <?php while (have_rows('features')) : the_row(); ?>
+                            <div class="col-sm-6">
+                                <h5><?php echo esc_html(get_sub_field('title')); ?></h5>
+                                <p><?php echo esc_html(get_sub_field('description')); ?></p>
+                            </div>
+                            <?php endwhile; ?>
+                            <?php endif; ?>
+
+                            <?php if ($show_rating) : ?>
+                            <div class="col-sm-12">
+                                <h5>Google Rating</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="fw-bold me-2"><?php echo esc_html($rating); ?></div>
+                                    <div class="d-flex fs-14">
+                                        <?php for ($i = 0; $i < 5; $i++) : ?>
+                                        <i class="fa fa-star<?php echo $i < 4 ? ' me-1' : ''; ?>"></i>
+                                        <?php endfor; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                        </div>
                     <?php endif; ?>
-                    <?php if ($button_text && $button_link) : ?>
-                    <a class="btn-main fx-slide"
-                        href="<?php echo esc_url($button_link); ?>"><span><?php echo esc_html($button_text); ?></span></a>
+                    <?php if ($page_link) : ?>
+                        <a class="btn-main fx-slide" 
+                        href="<?php echo esc_url($page_link['url']); ?>" 
+                        <?php echo $page_link['target'] ? 'target="' . esc_attr($page_link['target']) . '" rel="noopener"' : ''; ?>>
+                        <span><?php echo esc_html($page_link['title']); ?></span>
+                        </a>
                     <?php endif; ?>
                 </div>
             </div>

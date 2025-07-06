@@ -464,3 +464,14 @@ add_action('save_post', function ($post_id) {
         ]);
     }
 });
+
+add_action('init', function () {
+  register_block_pattern_category('custom', [
+    'label' => __('Custom Patterns', 'crossroads_theme'),
+  ]);
+
+  register_block_pattern(
+    'crossroads_theme/image-text-reversed',
+    require get_template_directory() . '/inc/patterns/image-text-reversed.php'
+  );
+});

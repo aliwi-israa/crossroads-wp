@@ -1,9 +1,5 @@
 <?php 
-$btn_text = get_sub_field('button_text');
-$is_external = get_sub_field('is_external_link');
-$internal_link = get_sub_field('button_link');
-$external_link = get_sub_field('external_link');
-$final_link = $is_external ? $external_link : $internal_link;
+$page_link = get_sub_field('page_link');
 ?>
 
 <section id="section-intro" class="text-light no-top no-bottom relative overflow-hidden">
@@ -31,9 +27,11 @@ $final_link = $is_external ? $external_link : $internal_link;
                         <?php if ($heading) : ?>
                           <h1><?php echo esc_html($heading); ?></h1>
                         <?php endif; ?>
-                        <?php if ($btn_text && $final_link) : ?>
-                          <a class="btn-main fx-slide menu_side_area m-0" href="<?php echo esc_url($final_link); ?>" <?php echo $is_external ? 'target="_blank" rel="noopener"' : ''; ?>>
-                            <span><?php echo esc_html($btn_text); ?></span>
+                        <?php if ($page_link) : ?>
+                          <a class="btn-main fx-slide menu_side_area m-0" 
+                            href="<?php echo esc_url($page_link['url']); ?>" 
+                            <?php echo $page_link['target'] ? 'target="' . esc_attr($page_link['target']) . '" rel="noopener"' : ''; ?>>
+                            <span><?php echo esc_html($page_link['title']); ?></span>
                           </a>
                         <?php endif; ?>
                       </div>
