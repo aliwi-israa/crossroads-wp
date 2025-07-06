@@ -291,7 +291,7 @@ function register_services_post_type() {
         'label'                 => 'Service',
         'description'           => 'Custom Post Type for services offered',
         'labels'                => $labels,
-        'supports'              => array('title', 'editor', 'thumbnail', 'custom-fields'),
+        'supports'              => array('title', 'editor', 'thumbnail', 'custom-fields','excerpt'),
         'taxonomies'            => array('service-category'),
         'hierarchical'          => false,
         'public'                => true,
@@ -441,5 +441,26 @@ class Services_Menu_Walker extends Walker_Nav_Menu {
       }
     }
 }
+/**
+ * listener to change slug when a post name is changed
+ */
+add_action('save_post', function ($post_id) {
+    // Only run for 'team' post type
+    if (get_post_type($post_id) !== 'team') return;
 
+    // Don't run on autosave or quick edit
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
 
+    // Get current slug and title
+    $post = get_post($post_id);
+    $current_slug = $post->post_name;
+    $new_slug = sanitize_title($post->post_title);
+
+    // Only update if slug doesn't match title and wasn't manually changed
+    if ($current_slug !== $new_slug && !isset($_POST['post_name'])) {
+        wp_update_post([
+            'ID' => $post_id,
+            'post_name' => $new_slug,
+        ]);
+    }
+});

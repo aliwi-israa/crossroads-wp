@@ -10,20 +10,26 @@ $description  = get_sub_field('description');
 $button_text  = get_sub_field('button_text');
 $button_link  = get_sub_field('button_link');
 
-// Row position check
-$row_index = get_row_index(); // 1-based index
-$is_even   = $row_index % 2 !== 0;
+$image_direction = get_sub_field('image_direction');
+$row_index = get_row_index(); // 1-based
 
-// CSS classes based on even/odd layout
-$section_class = $is_even ? 'bg-color bg-color-op-1' : '';
-$row_class     = $is_even ? 'row g-4 gx-5 align-items-center flex-row-reverse' : 'row g-4 gx-5 align-items-center';
+// Determine layout direction
+if (!$image_direction) {
+    $image_direction = ($row_index % 2 == 0) ? 'isImgRight' : 'isImgLeft';
+}
+
+$section_class = ($row_index % 2 == 0) ? 'bg-color bg-color-op-1' : '';
+
+$row_class = 'row g-4 gx-5 align-items-center';
+$row_class .= ($image_direction === 'isImgRight') ? ' flex-row-reverse' : ' flex-row';
 ?>
+
 
 <?php if ($heading || $subheading || $description || $image): ?>
 <section class="<?php echo esc_attr($section_class); ?>">
   <div class="container">
     <div class="<?php echo esc_attr($row_class); ?>">
-      
+
       <?php if ($image): ?>
       <div class="col-lg-6">
         <div class="rounded-1 overflow-hidden wow zoomIn image-container">

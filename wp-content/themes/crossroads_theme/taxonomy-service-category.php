@@ -1,32 +1,24 @@
-<?php get_header(); ?>
 <?php
-$term = get_queried_object(); // current taxonomy term
-$parent_id = $term->parent;
-$hero_term = $term; // default is current term
+get_header();
 
-// If current term has no hero layout, check parent
-if (!have_rows('flexible_content_subpage', $term)) {
-  if ($parent_id) {
-    $parent = get_term($parent_id, 'service-category');
-    if (have_rows('flexible_content_subpage', $parent)) {
-      $hero_term = $parent;
-    }
-  }
+// Get the current term object
+$term = get_queried_object();
+$top_level_term = $term;
+
+// Walk up to the top-level parent term
+while ($top_level_term->parent != 0) {
+    $top_level_term = get_term($top_level_term->parent, 'service-category');
 }
+
+// Pass the top-level term to the hero template
+$passed_top_level_term = $top_level_term;
 ?>
+
 
 <div id="wrapper">
     <div class="no-bottom no-top" id="content">
         <div id="top"></div>
-        <?php if (have_rows('flexible_content_subpage', $hero_term)): ?>
-        <?php while (have_rows('flexible_content_subpage', $hero_term)): the_row(); ?>
-            <?php
-            if (get_row_layout() === 'hero') {
-            include get_template_directory() . '/template-parts/flexible/hero.php';
-            }
-            ?>
-        <?php endwhile; ?>
-        <?php endif; ?>
+        <?php get_template_part('partials/hero-archive'); ?>
         <section class="pb-0">
             <div class="container mb-4">
               <div class="row">

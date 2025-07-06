@@ -3,24 +3,41 @@
  * Global Hero Section for Archives
  */
 
-// Set default fields
 $heading = '';
 $subheading = '';
+$description = '';
 
-// Detect post type or taxonomy archive and load corresponding fields
-if (is_post_type_archive('team_member')) {
-  $heading = get_field('team_members_heading', 'option');
-  $subheading = get_field('team_members_subheading', 'option');
+// Detect context
+if (is_singular()) {
+    $heading = get_the_title();
+
+    if (is_singular('service')) {
+        $subheading = 'Services';
+    } else if (is_singular('team_member')) {
+        $subheading = get_field('team_members_subheading', 'option');
+    }
+    else{
+      $subheading = get_field('hero_subheading') ?: '';
+    }
+
+    $description = get_field('hero_description') ?: '';
 }
+elseif (is_archive() || is_tax()) {
+  // Detect post type or taxonomy archive and load corresponding fields
+  if (is_post_type_archive('team_member')) {
+    $heading = post_type_archive_title('', false);
+    $subheading = get_field('team_members_subheading', 'option');
+  }
 
-if (is_post_type_archive('service')) {
-  $heading = get_field('services_heading', 'option');
-  $subheading = get_field('services_subheading', 'option');
-}
-
-if (is_post_type_archive('faq')) {
-  $heading = get_field('faq_heading', 'option');
-  $subheading = get_field('faq_subheading', 'option');
+  if (is_tax('service-category')) {
+      $term = get_queried_object();
+      $heading = $term->name;
+      $subheading = 'Services';
+  }
+  if (is_post_type_archive('faq')) {
+    $heading = post_type_archive_title('', false);
+    $subheading = get_field('faq_subheading', 'option');
+  }
 }
 
 // Output Hero if heading or subheading exist

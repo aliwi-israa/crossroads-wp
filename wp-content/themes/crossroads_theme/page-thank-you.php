@@ -14,26 +14,8 @@ $image_url = $image ? esc_url($image['url']) : '';
   <div class="page-content" style="margin-top:100px;">
     <div class="section page-content-first">
       <div class="container">
-        <div class="text-center mb-2 mb-md-3 mb-lg-4">
-          <?php if ($subtitle): ?>
-            <div class="h-sub theme-color"><?php echo esc_html($subtitle); ?></div>
-          <?php endif; ?>
-
-          <?php if ($title): ?>
-            <h1 class="orange-color"><?php echo esc_html($title); ?></h1>
-          <?php endif; ?>
-
-          <?php if ($message): ?>
-            <div class="text-blue"><?php echo wp_kses_post(nl2br($message)); ?></div>
-          <?php endif; ?>
-
-<?php if ($image): ?>
-  <img src="<?php echo esc_url($image['url']); ?>" alt="Confirmation">
-<?php endif; ?>
-
-        </div>
+        <?php the_content(); ?>
       </div>
-
       <div class="container">
         <div class="row">
           <div class="col text-center">
@@ -45,7 +27,8 @@ $image_url = $image ? esc_url($image['url']) : '';
           </div>
         </div>
       </div>
-    </div>
+
+</div>
   </div>
 </section>
 

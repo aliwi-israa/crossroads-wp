@@ -26,21 +26,25 @@
 		<p><?php the_field('footer_paragraph', 'option'); ?></p>
 
 		<?php
-		$social_links = get_field('social_links', 'option');
-		if ($social_links && is_array($social_links)): ?>
-		<div class="social-icons mb-sm-30">
-			<?php foreach ($social_links as $link): 
-			$url = $link['url'];
-			$icon = $link['icon_class'];
-			$label = $link['name'];?>
-			<?php if ($url && $icon): ?>
-				<a href="<?php echo esc_url($url); ?>" target="_blank" aria-label="<?php echo esc_attr($label); ?>">
-				<i class="<?php echo esc_attr($icon); ?>"></i>
-				</a>
-			<?php endif; ?>
-			<?php endforeach; ?>
-		</div>
-		<?php endif; ?>
+    $social_fields = [
+      'facebook'  => 'fa-brands fa-facebook',
+      'x'         => 'fa-solid fa-x fa-brands',
+      'instagram' => 'fa-brands fa-instagram',
+      'youtube'   => 'fa-brands fa-youtube',
+      'watsapp'   => 'fa-brands fa-whatsapp'
+    ];
+    ?>
+
+    <div class="social-icons mb-sm-30">
+      <?php foreach ($social_fields as $field => $icon_class):
+        $url = get_field($field, 'option');
+        if ($url): ?>
+          <a href="<?php echo esc_url($url); ?>" target="_blank" aria-label="<?php echo ucfirst($field); ?>">
+            <i class="<?php echo esc_attr($icon_class); ?>"></i>
+          </a>
+      <?php endif; endforeach; ?>
+    </div>
+
       </div>
       <div class="col-lg-4 col-md-8">
         <div class="widget">
@@ -96,8 +100,8 @@
 				?>
             </div>
             <ul class="menu-simple">
-              <li><a href="<?php echo $root; ?>terms/">Terms &amp; Conditions</a></li>
-              <li><a href="<?php echo $root; ?>privacy-policy/">Privacy Policy</a></li>
+              <li><a href="<?php echo esc_url(get_permalink(get_page_by_path('terms'))); ?>">Terms &amp; Conditions</a></li>
+              <li><a href="<?php echo esc_url(get_permalink(get_page_by_path('privacy-policy'))); ?>">Privacy Policy</a></li>
             </ul>
           </div>
         </div>

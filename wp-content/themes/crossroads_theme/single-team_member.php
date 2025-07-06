@@ -2,12 +2,12 @@
 
 <?php
 // ACF fields
-$display_name = get_field('name') ?: get_the_title(); // fallback to post title
+$display_name = get_the_title();
 $job_title    = get_field('job_title');
 $bio          = get_field('bio');
 $image_field = get_field('image');
 $image_url = '';
-
+$image_direction = get_field('image_direction') ?: 'isImgRight';
 if (is_array($image_field) && isset($image_field['url'])) {
     $image_url = $image_field['url'];
 } elseif (is_numeric($image_field)) {
@@ -21,26 +21,15 @@ $booking_link = get_field('ClinicBookingLink', 'option');
 $phone        = get_field('ClinicPhoneNumber', 'option');
 ?>
 
-<?php get_header(); ?>
 <div id="wrapper">
   <div class="no-bottom no-top" id="content">
     <div id="top"></div>
     <div class="entry-content">
-
-      <?php if (have_rows('flexible_content_subpage')): ?>
-      <?php while (have_rows('flexible_content_subpage')): the_row(); ?>
-      <?php
-        $layout = get_row_layout();
-
-        if ($layout === 'hero') {
-          include get_template_directory() . '/template-parts/flexible/hero.php';
-        }
-      ?>
-      <?php endwhile; ?>
-      <?php endif; ?>
+        <?php get_template_part('partials/hero-archive'); ?>
+        <?php get_template_part('partials/breadcrumbs'); ?>
         <section>
           <div class="container mt-6">
-            <div class="row">
+            <div class="row  <?php echo ($image_direction === 'isImgRight') ? 'content-block-right' : 'content-block-left'; ?>">
               <div class="col-md">
                 <div class="rounded-1 overflow-hidden wow zoomIn image-container animated" style="background-size: cover; background-repeat: no-repeat; visibility: visible; animation-name: zoomIn;">
                   <?php if ($image_url): ?>
