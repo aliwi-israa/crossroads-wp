@@ -61,7 +61,7 @@ $button_label = get_sub_field('button_label');
                                 <?php endif; ?>
 
                                 <?php if ($service_link) : ?>
-                                    <a class="btn-plus" href="<?php echo esc_url($service_link); ?>">
+                                    <a class="btn-plus text-blue" href="<?php echo esc_url($service_link); ?>">
                                         <i class="fa fa-plus"></i>
                                         <span>Read More</span>
                                         <span><?php echo esc_html($button_label); ?></span>

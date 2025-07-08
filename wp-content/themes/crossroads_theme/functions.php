@@ -176,11 +176,11 @@ require get_template_directory() . '/inc/cpt.php';
  */
 function crossroads_enqueue_styles() {
 	wp_enqueue_style('plugins-css', get_template_directory_uri() . '/assets/css/plugins.css');
-      wp_enqueue_style('critical-css', get_template_directory_uri() . '/assets/css/critical.css');
-    wp_enqueue_style('bootstrap-css', get_template_directory_uri() . '/assets/css/bootstrap.min.css');
+  wp_enqueue_style('critical-css', get_template_directory_uri() . '/assets/css/critical.css');
+  wp_enqueue_style('bootstrap-css', get_template_directory_uri() . '/assets/css/bootstrap.min.css');
 	wp_enqueue_style('swiper-css', get_template_directory_uri() . '/assets/css/swiper.css');
-    wp_enqueue_style('custom-css', get_template_directory_uri() . '/assets/css/style.css');
-	wp_enqueue_style('custom-mobile.css', get_template_directory_uri() . '/assets/css/style-mobile.css');
+  wp_enqueue_style('custom-css', get_template_directory_uri() . '/assets/css/style.min.css');
+	wp_enqueue_style('custom-mobile.css', get_template_directory_uri() . '/assets/css/style-mobile.min.css');
 
 }
 add_action('wp_enqueue_scripts', 'crossroads_enqueue_styles');

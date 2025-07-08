@@ -44,10 +44,14 @@ $image_direction = get_sub_field('image_direction');
                             <div class="col-sm-12">
                                 <h5>Google Rating</h5>
                                 <div class="d-flex align-items-center">
-                                    <div class="fw-bold me-2"><?php echo esc_html($rating); ?></div>
+                                <div class="fw-bold me-2"><?php echo esc_html($rating); ?></div>
                                     <div class="d-flex fs-14">
                                         <?php for ($i = 0; $i < 5; $i++) : ?>
-                                        <i class="fa fa-star<?php echo $i < 4 ? ' me-1' : ''; ?>"></i>
+                                            <?php if ($i < $rating): ?>
+                                                <i class="fas fa-star text-warning<?php echo $i < 4 ? ' me-1' : ''; ?>"></i>
+                                            <?php else: ?>
+                                                <i class="far fa-star text-muted<?php echo $i < 4 ? ' me-1' : ''; ?>"></i>
+                                            <?php endif; ?>
                                         <?php endfor; ?>
                                     </div>
                                 </div>

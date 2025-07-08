@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Contact Page
+ * Template Name: Careers Page
  */
 get_header();
 ?>
@@ -9,7 +9,7 @@ get_header();
     <?php get_template_part('partials/hero-archive'); ?>
     <?php get_template_part('partials/breadcrumbs'); ?>
     <section>
-        <div class="page-content>
+        <div class="page-content">
             <div class="section page-content-first">
                 <div class="container">
                     <?php get_template_part( 'template-parts/careers', 'page' ); ?>

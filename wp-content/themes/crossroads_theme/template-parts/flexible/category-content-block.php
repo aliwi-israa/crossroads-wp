@@ -37,30 +37,30 @@
             <p><?php echo wp_kses_post($section_desc); ?></p>
           <?php endif; ?>
 
-          <?php if (have_rows('services')): ?>
-            <ul class="fw-500 mb-4 wow fadeInUp services-icon-list" data-wow-delay=".6s">
-              <?php while (have_rows('services')) : the_row();
-                $icon       = get_sub_field('service_icon');
-                $title      = get_sub_field('service_title');
-                $desc       = get_sub_field('service_desc');
-                $link       = get_sub_field('service_link');
-                $url        = $link['url'] ?? '#';
-                $target     = $link['target'] ?? '_self';
-              ?>
-              <li class="mb-4">
-                <a href="<?php echo esc_url($url); ?>" target="<?php echo esc_attr($target); ?>">
-                  <div class="services-icons">
-                    <?php if ($icon): ?>
-                      <img src="<?php echo esc_url($icon['url']); ?>" class="w-100 wow scaleIn" alt="<?php echo esc_attr($title); ?>">
-                    <?php endif; ?>
-                    <strong><?php echo esc_html($title); ?></strong>
-                  </div><br>
-                  <?php echo esc_html($desc); ?>
-                </a>
-              </li>
-              <?php endwhile; ?>
-            </ul>
-          <?php endif; ?>
+             <?php
+              $services = get_sub_field('services');
+              if ($services): ?>
+                <ul class="fw-500 mb-4 wow fadeInUp services-icon-list" data-wow-delay=".6s">
+                  <?php foreach ($services as $service):
+                    $service_title = get_the_title($service->ID);
+                    $service_desc = get_the_excerpt($service->ID);
+                    $service_icon = get_field('service_icon', $service->ID);
+                    $service_link = get_permalink($service->ID);
+                  ?>
+                    <li class="mb-4">
+                      <a href="<?php echo esc_url($service_link); ?>">
+                        <div class="services-icons">
+                          <?php if ($service_icon): ?>
+                            <img src="<?php echo esc_url($service_icon['url']); ?>" class="w-100 wow scaleIn" alt="<?php echo esc_attr($service_title); ?>">
+                          <?php endif; ?>
+                          <strong><?php echo esc_html($service_title); ?></strong>
+                        </div><br>
+                        <?php echo esc_html($service_desc); ?>
+                      </a>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php endif; ?>
         <?php endwhile; ?>
       </div>
     </section>
