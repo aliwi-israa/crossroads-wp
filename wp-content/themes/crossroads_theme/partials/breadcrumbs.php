@@ -32,7 +32,12 @@
               }
               echo '<li class="active">' . get_the_title() . '</li>';
 
-          } elseif (is_tax('service-category')) {
+          } 
+          elseif (is_post_type_archive('service')) {
+                echo '<li class="active">Our Services</li>';
+            }
+
+            elseif (is_tax('service-category')) {
               // Taxonomy archive
               $term = get_queried_object();
               if ($term->parent) {

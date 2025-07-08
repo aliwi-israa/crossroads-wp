@@ -16,16 +16,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6 mb-sm-30 wrapper">
+            <div class="col-lg-4 col-md-6 mb-sm-30 wrapper office-hours-block">
                 <div class="d-flex align-items-center icons">
                     <i class="id-color fa-solid fa-clock fs-1 fs-md-2 fs-lg-3"></i>
                     <div class="ms-3 text">
                         <h4 class="mb-0">Opening Hours</h4>
                         <?php if (have_rows('office_hours', 'option')) : ?>
                         <?php while (have_rows('office_hours', 'option')) : the_row(); 
-                    $day = get_sub_field('days');
-                    $hours = get_sub_field('hours');
-                ?>
+                            $day = get_sub_field('days');
+                            $hours = get_sub_field('hours');
+                        ?>
                         <p><?php echo esc_html($day); ?>: <?php echo esc_html($hours); ?></p>
                         <?php endwhile; ?>
                         <?php else : ?>

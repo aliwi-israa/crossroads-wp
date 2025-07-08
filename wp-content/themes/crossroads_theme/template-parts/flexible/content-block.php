@@ -7,8 +7,7 @@ $image        = get_sub_field('image');
 $heading      = get_sub_field('heading');
 $subheading   = get_sub_field('subheading');
 $description  = get_sub_field('description');
-$button_text  = get_sub_field('button_text');
-$button_link  = get_sub_field('button_link');
+$page_link = get_sub_field('page_link');
 
 $image_direction = get_sub_field('image_direction');
 $row_index = get_row_index(); // 1-based
@@ -55,11 +54,12 @@ $row_class .= ($image_direction === 'isImgRight') ? ' flex-row-reverse' : ' flex
           <?php if ($description): ?>
             <p class="wow fadeInUp"><?php echo wp_kses_post($description); ?></p>
           <?php endif; ?>
-
-          <?php if ($button_text && $button_link): ?>
-            <a class="btn-main fx-slide wow fadeInUp" data-wow-delay=".8s" href="<?php echo esc_url($button_link); ?>">
-              <span><?php echo esc_html($button_text); ?></span>
-            </a>
+          <?php if ($page_link) : ?>
+              <a class="btn-main fx-slide wow fadeInUp" data-wow-delay=".8s"
+              href="<?php echo esc_url($page_link['url']); ?>" 
+              <?php echo $page_link['target'] ? 'target="' . esc_attr($page_link['target']) . '" rel="noopener"' : ''; ?>>
+              <span><?php echo esc_html($page_link['title']); ?></span>
+              </a>
           <?php endif; ?>
         </div>
       </div>

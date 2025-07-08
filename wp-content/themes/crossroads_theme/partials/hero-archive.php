@@ -28,6 +28,10 @@ elseif (is_archive() || is_tax()) {
     $heading = post_type_archive_title('', false);
     $subheading = get_field('team_members_subheading', 'option');
   }
+  if (is_post_type_archive('service')) {
+    $heading = post_type_archive_title('', false);
+    $subheading = 'Discover our treatment options';
+}
 
   if (is_tax('service-category')) {
       $term = get_queried_object();

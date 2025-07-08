@@ -36,23 +36,25 @@
               'container'      => false,
               'walker'         => new Services_Menu_Walker()
             ]);
+            $phone = get_field('ClinicPhoneNumber', 'option') ?: '(+1) 234-5678';
+            $booking_link = get_field('booking_link', 'option') ?: 'https://dentalookcrossroads.akituone.cloud/online-booking/crossroads-dental-clinic';
             ?>
           </div>
 
           <!-- ✅ CTA Buttons -->
           <div class="de-flex-col">
             <div class="menu_side_area d-flex gap-3 align-items-center">
-              <a href="<?php echo esc_url(get_theme_mod('booking_link', '#')); ?>" class="btn-main fx-slide">
+              <a href="<?php echo esc_attr($booking_link); ?>" class="btn-main fx-slide">
                 <span>Book Appointment</span>
               </a>
-              <a href="tel:<?php echo esc_attr(get_theme_mod('clinic_phone', '+1 234-5678')); ?>" class="btn-main fx-slide btn-outline-white">
-                <span>Call: <?php echo esc_html(get_theme_mod('clinic_phone', '+1 234-5678')); ?></span>
+              <a href="tel:<?php echo esc_attr($phone); ?>" class="btn-main fx-slide btn-outline-white">
+                <span>Call: <?php echo esc_attr($phone); ?></span>
               </a>
               <div class="d-flex d-md-none mobile-cta">
-                <a href="<?php echo esc_url(get_theme_mod('booking_link', '#')); ?>" class="btn-cta-green" aria-label="Book Appointment">
+                <a href="<?php echo esc_attr($booking_link); ?>" class="btn-cta-green" aria-label="Book Appointment">
                   <i class="fs-30 id-color fa-solid fas fa-calendar-alt"></i>
                 </a>
-                <a href="tel:<?php echo esc_attr(get_theme_mod('clinic_phone', '+1 234-5678')); ?>" class="btn-cta-blue" aria-label="Call Us">
+                <a href="tel:<?php echo esc_attr($phone); ?>" class="btn-cta-blue" aria-label="Call Us">
                   <i class="fs-30 id-color fa-solid fa-phone"></i>
                 </a>
               </div>

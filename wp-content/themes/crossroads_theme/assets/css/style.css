@@ -839,7 +839,7 @@ header.header-mobile.header-light #menu-btn {
   z-index: 100;
 }
 
-section {
+section, .section.wp-block-group {
   padding: 60px 0 120px 0;
 }
 
@@ -1009,7 +1009,21 @@ a {
   text-decoration: none;
 }
 
+.wp-block-button__link {
+  font-size: unset;
+  padding: 0;
+  background-color: unset;
+}
+.wp-block-image img {
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+    border-radius: 8px;
+    display: block;
+  }
+
 a.btn-main:hover,
+.wp-block-button:hover,
 .btn-main:hover,
 a.btn-main.btn-line:hover {
   color: #fff;
@@ -1029,7 +1043,8 @@ a.btn-main:active,
 a.btn-main:focus,
 a.btn-main:visited,
 .btn-main,
-a.btn-line {
+a.btn-line,
+.wp-block-button {
   background: var(--primary-color);
   color: var(--btn-color);
   font-family: var(--btn-font-family);
@@ -1075,31 +1090,36 @@ a.btn-line {
 }
 
 a.btn-main.fx-slide,
-a.btn-secondary.fx-slide {
+a.btn-secondary.fx-slide,
+.wp-block-button {
   overflow: hidden;
 }
 
 a.btn-main.fx-slide span,
-a.btn-secondary.fx-slide span {
+a.btn-secondary.fx-slide span,
+.wp-block-button .wp-element-button  {
   display: block;
   position: relative;
   transition: all .3s ease-in-out;
 }
 
 a.btn-main.fx-slide:hover span,
-a.btn-secondary.fx-slide:hover span {
+a.btn-secondary.fx-slide:hover span ,
+.wp-block-button:hover .wp-element-button  {
   transform: translate(0, 40px);
   opacity: 0;
 }
 
 a.btn-main.fx-slide:hover:before,
-a.btn-secondary.fx-slide:hover:before {
+a.btn-secondary.fx-slide:hover:before ,
+.wp-block-button:hover:before {
   opacity: 1;
   transform: translate(0, 0);
 }
 
 a.btn-main.fx-slide:before,
-a.btn-secondary.fx-slide:before {
+a.btn-secondary.fx-slide:before,
+.wp-block-button:before  {
   content: attr(data-hover);
   position: absolute;
   left: 0;
@@ -2837,6 +2857,9 @@ footer .col-lg-4  {
 a:visited {
   color: unset;
 }
+a.text-blue:visited {
+  color: var(--secondary-color);
+}
 .content-block-right {
   display: flex;
   flex-direction: row-reverse;
@@ -2845,7 +2868,9 @@ a:visited {
   display: flex;
   flex-direction: row;
 }
-
+.office-hours-block p{
+    margin-bottom:0;
+}
 @-webkit-keyframes move-up-down {
   0% {
     transform: translateY(0);
