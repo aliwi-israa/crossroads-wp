@@ -87,9 +87,9 @@ if (!empty($categories)) :
   </ul>
 
 <?php
-if (! wp_is_mobile()) {
-    get_template_part('partials/contact-form-desktop');
-}
+// if (! wp_is_mobile()) {
+//     get_template_part('partials/contact-form-desktop');
+// }
 ?>
 
 <?php get_template_part('partials/office-hours'); ?>

@@ -170,7 +170,66 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 }
 
 require get_template_directory() . '/inc/cpt.php';
+/**
+ * Enqueue Google Fonts (Urbanist and Inter) for the theme.
+ */
+function crossroads_enqueue_google_fonts() {
+    // Enqueue Urbanist font
+    wp_enqueue_style(
+        'google-font-urbanist', // Unique handle for the stylesheet
+        'https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap',
+        array(), // No dependencies
+        null // Use null for version as Google Fonts handles its own versioning
+    );
 
+    // Enqueue Inter font
+    wp_enqueue_style(
+        'google-font-inter', // Unique handle for the stylesheet
+        'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap',
+        array(), // No dependencies
+        null // Use null for version
+    );
+}
+add_action( 'wp_enqueue_scripts', 'crossroads_enqueue_google_fonts' );
+/**
+ * Add fonts.
+ */
+function crossroads_add_editor_styles() {
+    add_theme_support( 'editor-styles' );
+    // Enqueue Urbanist for the editor
+    wp_enqueue_style(
+        'google-font-urbanist-editor',
+        'https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap',
+        array(),
+        null
+    );
+
+    // Enqueue Inter for the editor
+    wp_enqueue_style(
+        'google-font-inter-editor',
+        'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap',
+        array(),
+        null
+    );
+}
+add_action( 'after_setup_theme', 'crossroads_add_editor_styles' );
+
+function crossroads_enqueue_block_editor_assets() {
+    wp_enqueue_style(
+        'google-font-urbanist-editor-assets',
+        'https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap',
+        array(),
+        null
+    );
+
+    wp_enqueue_style(
+        'google-font-inter-editor-assets',
+        'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap',
+        array(),
+        null
+    );
+}
+add_action( 'enqueue_block_editor_assets', 'crossroads_enqueue_block_editor_assets' );
 /**
  * Load CSS.
  */
@@ -179,7 +238,7 @@ function crossroads_enqueue_styles() {
   wp_enqueue_style('critical-css', get_template_directory_uri() . '/assets/css/critical.css');
   wp_enqueue_style('bootstrap-css', get_template_directory_uri() . '/assets/css/bootstrap.min.css');
 	wp_enqueue_style('swiper-css', get_template_directory_uri() . '/assets/css/swiper.css');
-  wp_enqueue_style('custom-css', get_template_directory_uri() . '/assets/css/style.min.css');
+  wp_enqueue_style('custom-css', get_template_directory_uri() . '/assets/css/style.css');
 	wp_enqueue_style('custom-mobile.css', get_template_directory_uri() . '/assets/css/style-mobile.min.css');
 
 }
@@ -245,70 +304,137 @@ add_filter('body_class', 'add_custom_body_class');
  * create dyamic navbar
  */
 class Services_Menu_Walker extends Walker_Nav_Menu {
-  public function start_lvl( &$output, $depth = 0, $args = null ) {
-    $output .= '<ul>';
-  }
 
-  public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
-    $title   = esc_html($item->title);
-    $url     = esc_url($item->url);
-    $classes = implode(' ', $item->classes ?? []);
+    /**
+     * Starts the list of the current level of the tree.
+     *
+     * @param string $output Used to append additional content (passed by reference).
+     * @param int    $depth Depth of the current menu item.
+     * @param array  $args   An array of arguments.
+     */
+    public function start_lvl( &$output, $depth = 0, $args = null ) {
+        // Add a class for sub-menus, useful for styling
+        $output .= '<ul class="sub-menu depth-' . esc_attr($depth) . '">';
+    }
 
-    // Replace static Services item with dynamic dropdown
-    if (stripos($title, 'Services') !== false && $depth === 0) {
-      echo '<!-- Debug: Found Services menu -->';
+    /**
+     * Ends the list of the current level of the tree.
+     *
+     * @param string $output Used to append additional content (passed by reference).
+     * @param int    $depth Depth of the current menu item.
+     * @param array  $args   An array of arguments.
+     */
+    public function end_lvl( &$output, $depth = 0, $args = null ) {
+        $output .= '</ul>';
+    }
 
-      $output .= '<li class="menu-item-has-children has-child">';
-      $output .= '<a class="menu-item" href="' . home_url('/services/') . '">Services</a>';
-      $output .= '<span><i class="fas fa-chevron-down d-flex d-lg-none"></i></span>';
-      $output .= '<ul>';
+    /**
+     * Starts the element output.
+     *
+     * @param string  $output Used to append additional content (passed by reference).
+     * @param WP_Post $item   Menu item data object.
+     * @param int     $depth  Depth of menu item. Used for padding.
+     * @param array   $args   An array of arguments.
+     * @param int     $id     Current item ID.
+     */
+    public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
+        $title   = esc_html($item->title);
+        $url     = esc_url($item->url);
+        $classes = implode(' ', $item->classes ?? []);
 
-      $categories = get_terms([
-        'taxonomy'   => 'service-category',
-        'hide_empty' => false,
-        'orderby'    => 'name',
-      ]);
-      if (!empty($categories)) {
-  foreach ($categories as $cat) {
-    // render category and services
-  }
-  } else {
-    $output .= '<li><a href="#">No services found</a></li>';
-  }
-
-
-        foreach ($categories as $cat) {
-          $services = get_posts([
-            'post_type' => 'service',
-            'posts_per_page' => -1,
-            'orderby' => 'menu_order',
-            'order' => 'ASC',
-            'tax_query' => [[
-              'taxonomy' => 'service-category',
-              'field' => 'term_id',
-              'terms' => $cat->term_id,
-            ]],
-          ]);
-
-          if ($services) {
-            $cat_slug = sanitize_title($cat->name);
-            $output .= '<li class="has-child">';
-            $output .= '<a href="' . home_url('/service-category/' . $cat_slug . '/') . '">' . esc_html($cat->name) . '</a>';
+        // Check if this is the "Services" menu item at the top level (depth 0)
+        // This allows you to create a "Services" menu item in Appearance > Menus
+        // and have this walker dynamically populate its children.
+        if (stripos($title, 'Services') !== false && $depth === 0) {
+            // Start the main "Services" parent menu item
+            $output .= '<li class="menu-item-has-children has-child ' . esc_attr($classes) . '">';
+            // Link to the main services archive page
+            $output .= '<a class="menu-item" href="' . home_url('/services/') . '">' . $title . '</a>';
+            // Add a dropdown icon for mobile/responsive menus
             $output .= '<span><i class="fas fa-chevron-down d-flex d-lg-none"></i></span>';
-            $output .= '<ul>';
-            foreach ($services as $service) {
-              $output .= '<li><a href="' . get_permalink($service->ID) . '">' . esc_html($service->post_title) . '</a></li>';
-            }
-            $output .= '</ul></li>';
-          }
-        }
+            
+            // Start the sub-menu for service categories
+            $output .= '<ul class="sub-menu">';
 
-        $output .= '</ul></li>';
-      } else {
-        // Render regular menu items (including dropdowns)
-        $output .= '<li class="' . esc_attr($classes) . '">';
-        $output .= '<a class="menu-item" href="' . $url . '">' . $title . '</a>';
-      }
+            // Get top-level service categories
+            $categories = get_terms([
+                'taxonomy'   => 'service-category',
+                'hide_empty' => false,
+                // 'orderby'    => 'name', // Default alphabetical order
+                // For custom order, use 'orderby' => 'meta_value_num' and 'meta_key' => 'term_order_field_name'
+                // after implementing a custom field for term order.
+                // Or, if using a plugin like "Category Order and Taxonomy Terms Order", it might
+                // automatically adjust the default query or provide a specific 'orderby' value.
+                'parent'     => 0, // Only get top-level categories
+            ]);
+
+            if (!empty($categories) && !is_wp_error($categories)) {
+                foreach ($categories as $cat) {
+                    // Start a list item for each service category
+                    $output .= '<li class="has-child">';
+                    // Correct URL for service category archive: /services/{category-slug}/
+                    $output .= '<a href="' . home_url('/services/' . $cat->slug . '/') . '">' . esc_html($cat->name) . '</a>';
+                    // Add a dropdown icon for mobile/responsive menus
+                    $output .= '<span><i class="fas fa-chevron-down d-flex d-lg-none"></i></span>';
+                    
+                    // Start the sub-menu for services within this category
+                    $output .= '<ul class="sub-menu">';
+
+                    // Get services (posts) associated with this category and its children
+                    $services = get_posts([
+                        'post_type'      => 'service',
+                        'post_status'    => 'publish',
+                        'posts_per_page' => -1, // Get all services
+                        'orderby'        => 'menu_order', // Order by 'Order' field in post editor
+                        'order'          => 'ASC',
+                        'tax_query'      => [[
+                            'taxonomy'         => 'service-category',
+                            'field'            => 'term_id',
+                            'terms'            => $cat->term_id, // Get posts directly in this category
+                            'include_children' => true, // Also include posts in child categories
+                        ]],
+                    ]);
+
+                    if ($services) {
+                        foreach ($services as $service) {
+                            // Link to individual service post
+                            $output .= '<li><a href="' . get_permalink($service->ID) . '">' . esc_html($service->post_title) . '</a></li>';
+                        }
+                    } else {
+                        // Optional: Display a message if no services are found for a category
+                        // $output .= '<li><a href="#">No services in this category</a></li>';
+                    }
+
+                    $output .= '</ul></li>'; // End service category sub-menu and list item
+                }
+            } else {
+                $output .= '<li><a href="#">No service categories found</a></li>';
+            }
+
+            $output .= '</ul></li>'; // End main "Services" sub-menu and list item
+
+        } else {
+            // Render regular menu items (not the special "Services" item)
+            $output .= '<li class="' . esc_attr($classes) . '">';
+            $output .= '<a class="menu-item" href="' . $url . '">' . $title . '</a>';
+            // If the item has children, you might want to add the dropdown span here too
+            if (in_array('menu-item-has-children', $item->classes ?? [])) {
+                $output .= '<span><i class="fas fa-chevron-down d-flex d-lg-none"></i></span>';
+            }
+            // The Walker handles the sub-level <ul> and </ul> tags automatically for regular items
+        }
+    }
+
+    /**
+     * Ends the element output.
+     *
+     * @param string  $output Used to append additional content (passed by reference).
+     * @param WP_Post $item   Menu item data object.
+     * @param int     $depth  Depth of menu item. Used for padding.
+     * @param array   $args   An array of arguments.
+     */
+    public function end_el( &$output, $item, $depth = 0, $args = null ) {
+        $output .= '</li>';
     }
 }
 /**
@@ -355,4 +481,16 @@ add_action('init', function () {
   );
 });
 
+function enqueue_pattern_padding_remover_script() {
+    // Check if the script should be loaded only on specific pages/posts if needed
+    // For now, it will load on all pages.
+    wp_enqueue_script(
+        'pattern-padding-remover',
+        get_template_directory_uri() . '/assets/js/pattern-padding-remover.js',
+        array('jquery'), // Add jQuery as a dependency if you use it, otherwise remove.
+        filemtime(get_template_directory() . '/assets/js/pattern-padding-remover.js'), // Cache busting
+        true // Load in the footer
+    );
+}
+add_action('wp_enqueue_scripts', 'enqueue_pattern_padding_remover_script');
 

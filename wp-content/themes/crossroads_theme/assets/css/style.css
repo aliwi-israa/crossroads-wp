@@ -3,6 +3,7 @@
   --primary-color-rgb: 74, 124, 210;
   --secondary-color: #21577F;
   --secondary-color-rgb: 59, 157, 31;
+  --button-darker-color: #58938c;
 }
 
 * {
@@ -1045,7 +1046,7 @@ a.btn-main:visited,
 .btn-main,
 a.btn-line,
 .wp-block-button {
-  background: var(--primary-color);
+  background: var(--button-darker-color);
   color: var(--btn-color);
   font-family: var(--btn-font-family);
   font-size: var(--btn-font-size);
@@ -1061,7 +1062,7 @@ a.btn-line,
   display: inline-block;
   text-align: center;
   outline: 0;
-  border: 1px solid var(--primary-color);
+  border: 1px solid var(--button-darker-color);
 }
 
 a.btn-secondary,
@@ -2870,6 +2871,31 @@ a.text-blue:visited {
 }
 .office-hours-block p{
     margin-bottom:0;
+}
+header .menu-item {
+  margin-bottom: 0 !important;
+    line-height: 30.4px !important;
+}
+html {
+  margin: 0 !important;
+}
+body {
+  height:100%!important;
+}
+.pattern-wrapper-no-padding {
+    padding: 0 !important; 
+    margin: 0 !important;
+}
+.wp-block-columns {
+    gap: 0;
+
+}
+.wp-block-column  {
+     padding-right: 24px;
+    padding-left: 24px;
+}
+.wp-block-list li a strong{
+color: var(--secondary-color);
 }
 @-webkit-keyframes move-up-down {
   0% {

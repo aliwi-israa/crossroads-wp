@@ -36,8 +36,8 @@
               'container'      => false,
               'walker'         => new Services_Menu_Walker()
             ]);
-            $phone = get_field('ClinicPhoneNumber', 'option') ?: '(+1) 234-5678';
-            $booking_link = get_field('booking_link', 'option') ?: 'https://dentalookcrossroads.akituone.cloud/online-booking/crossroads-dental-clinic';
+            $phone = get_field('phone_number', 'option');
+            $booking_link = get_field('booking_link', 'option');
             ?>
           </div>
 

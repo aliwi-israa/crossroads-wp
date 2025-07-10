@@ -87,3 +87,4 @@ $contact_form_embed  = get_field('form');
             </div>
         </div>
     </section>
+<script src="https://link.msgsndr.com/js/form_embed.js"></script>
